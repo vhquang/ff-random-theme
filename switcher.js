@@ -35,11 +35,6 @@ function randomTheme() {
 
   browser.management.getAll().then((extensions) => {
     const themes = extensions.filter(ext => ext.type === 'theme');
-    // for (let ext of extensions) {
-    //   if (ext.type === 'theme') {
-    //     themes.push(ext);
-    //   }
-    // }
     pick(themes);
   });
 }
