@@ -22,3 +22,26 @@ browser.management.getAll().then((extensions) => {
 });
 
 themeList.addEventListener('change', enableTheme);
+
+function randomTheme() {
+
+  function pick(themes) {
+    var theme = themes[Math.floor(Math.random() * themes.length)];
+    console.log(theme);
+    return browser.management.setEnabled(theme.id, true).then(() => {
+      document.getElementById('randomBtn').textContent = theme.name;
+    });
+  }
+
+  browser.management.getAll().then((extensions) => {
+    const themes = extensions.filter(ext => ext.type === 'theme');
+    // for (let ext of extensions) {
+    //   if (ext.type === 'theme') {
+    //     themes.push(ext);
+    //   }
+    // }
+    pick(themes);
+  });
+}
+
+document.getElementById('randomBtn').onclick = randomTheme;
