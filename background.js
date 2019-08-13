@@ -28,15 +28,29 @@ function themeExtractor(theme) {
   return res;
 }
 
-const png = "moz-extension://8594443b-581b-418b-8d61-427737be7a20/greyflat-boflash-03.apng";
-var file = new File([], png);
+// var png = "moz-extension://8594443b-581b-418b-8d61-427737be7a20/greyflat-boflash-03.apng";
+var png = "moz-extension://6e372956-7103-495f-8a14-87085e675081/Persona_Header_LABS_FINAL.jpg";
+
+var file = new File(['abc'], png);
+
 var reader = new FileReader();
+
 reader.onload = function(aImg) {
   console.log('load image');
   console.log(aImg);
+  console.log(aImg.total);
   // return function(e) { aImg.src = e.target.result; };
 }
+
+reader.onloadend = function(_status) {
+    var content = reader.result;
+    console.log('end');
+    console.log(content);
+    console.log(content.length);
+}
+
 reader.readAsDataURL(file);
+// reader.readAsBinaryString(file);
 
 function loadImage(path) {
   path = "moz-extension://8594443b-581b-418b-8d61-427737be7a20/greyflat-boflash-03.apng";
@@ -51,9 +65,9 @@ browser.management.getAll().then(extensions => {
   browser.management.setEnabled(t.id, true)
   .then( () => browser.theme.getCurrent() )
   .then( (curTheme) => {
-    console.log(curTheme);
-    var theme = themeExtractor(curTheme);
-    console.log(theme);
+    // console.log(curTheme);
+    // var theme = themeExtractor(curTheme);
+    // console.log(theme);
     // return browser.theme.update(theme);
   });
 });
