@@ -11,7 +11,7 @@ function themeExtractor(theme) {
   var res = {};
   themeProps = [
     'colors',
-    // 'images',
+    'images',
     'properties'
   ];
   for (const key of themeProps) {
@@ -28,6 +28,21 @@ function themeExtractor(theme) {
   return res;
 }
 
+const png = "moz-extension://8594443b-581b-418b-8d61-427737be7a20/greyflat-boflash-03.apng";
+var file = new File([], png);
+var reader = new FileReader();
+reader.onload = function(aImg) {
+  console.log('load image');
+  console.log(aImg);
+  // return function(e) { aImg.src = e.target.result; };
+}
+reader.readAsDataURL(file);
+
+function loadImage(path) {
+  path = "moz-extension://8594443b-581b-418b-8d61-427737be7a20/greyflat-boflash-03.apng";
+
+}
+
 browser.management.getAll().then(extensions => {
   var themes = extensions.filter(ext => ext.type === 'theme');
   // console.log(themes);
@@ -39,7 +54,7 @@ browser.management.getAll().then(extensions => {
     console.log(curTheme);
     var theme = themeExtractor(curTheme);
     console.log(theme);
-    return browser.theme.update(theme);
+    // return browser.theme.update(theme);
   });
 });
 
