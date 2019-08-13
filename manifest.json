@@ -6,7 +6,7 @@
     "background": {
       "scripts": ["background.js"]
     },
-    "permissions": ["theme", "management"],
+    "permissions": ["theme", "management", "<all_urls>"],
     "applications": {
       "gecko": {
         "id": "private-window-theme@mozilla.org",

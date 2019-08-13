@@ -49,8 +49,19 @@ reader.onloadend = function(_status) {
     console.log(content.length);
 }
 
-reader.readAsDataURL(file);
+// reader.readAsDataURL(file);
 // reader.readAsBinaryString(file);
+
+
+var req = new XMLHttpRequest();
+req.onload = function() {
+  console.log('xml request');
+  console.log(req.response);
+};
+req.open("GET", png);
+req.send();
+
+
 
 function loadImage(path) {
   path = "moz-extension://8594443b-581b-418b-8d61-427737be7a20/greyflat-boflash-03.apng";
