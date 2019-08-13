@@ -1,4 +1,4 @@
-var themeList = document.getElementById('theme-list');
+// var themeList = document.getElementById('theme-list');
 
 function enableTheme(e) {
   browser.management.setEnabled(e.target.value, true);
@@ -17,11 +17,11 @@ browser.management.getAll().then((extensions) => {
     if (extension.enabled) {
       option.selected = true;
     }
-    themeList.appendChild(option);
+    // themeList.appendChild(option);
   }
 });
 
-themeList.addEventListener('change', enableTheme);
+// themeList.addEventListener('change', enableTheme);
 
 function randomTheme() {
 
