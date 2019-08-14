@@ -4,6 +4,8 @@
 // Theme all currently open windows
 // browser.windows.getAll().then(wins => wins.forEach(themeWindow));
 
+
+//#region Extract theme info
 var themes_collector = {};
 
 
@@ -11,7 +13,7 @@ function themeExtractor(theme) {
   var res = {};
   themeProps = [
     'colors',
-    'images',
+    // 'images',
     'properties'
   ];
   for (const key of themeProps) {
@@ -27,6 +29,51 @@ function themeExtractor(theme) {
   // console.log(res);
   return res;
 }
+
+function collectTheme(themes) {
+  var t = themes[2];
+  var p = new Promise( function(resolve, reject) {
+
+  });
+  browser.management.setEnabled(t.id, true)
+  .then( () => browser.theme.getCurrent() )
+  .then( (curTheme) => {
+    // console.log(curTheme);
+    var theme = themeExtractor(curTheme);
+    // console.log(theme);
+    // return browser.theme.update(theme);
+    themes_collector[t.id] = theme;
+    p.resolve();
+  });
+  return p;
+}
+
+
+function demoCollect(themes) {
+  var t = themes[2];
+  browser.management.setEnabled(t.id, true)
+  .then( () => browser.theme.getCurrent() )
+  .then( (curTheme) => {
+    console.log(curTheme);
+    var theme = themeExtractor(curTheme);
+    console.log(theme);
+    // return browser.theme.update(theme);
+    themes_collector[t.id] = theme;
+  });
+}
+
+
+browser.management.getAll().then(extensions => {
+  var themes = extensions.filter(ext => ext.type === 'theme');
+  console.log(themes);
+  demoCollect(themes);
+  // collectTheme(themes).then( () => console.log(themes_collector) );
+});
+
+//#endregion
+
+
+//#region Extracting image
 
 // var png = "moz-extension://8594443b-581b-418b-8d61-427737be7a20/greyflat-boflash-03.apng";
 var png = "moz-extension://6e372956-7103-495f-8a14-87085e675081/Persona_Header_LABS_FINAL.jpg";
@@ -53,36 +100,20 @@ reader.onloadend = function(_status) {
 // reader.readAsBinaryString(file);
 
 
+
 var req = new XMLHttpRequest();
 req.onload = function() {
   console.log('xml request');
   console.log(req.response);
 };
 req.open("GET", png);
-req.send();
+// req.send();
 
 
+//#endregion
 
-function loadImage(path) {
-  path = "moz-extension://8594443b-581b-418b-8d61-427737be7a20/greyflat-boflash-03.apng";
 
-}
-
-browser.management.getAll().then(extensions => {
-  var themes = extensions.filter(ext => ext.type === 'theme');
-  // console.log(themes);
-  var t = themes[2];
-  console.log(t.name);
-  browser.management.setEnabled(t.id, true)
-  .then( () => browser.theme.getCurrent() )
-  .then( (curTheme) => {
-    // console.log(curTheme);
-    // var theme = themeExtractor(curTheme);
-    // console.log(theme);
-    // return browser.theme.update(theme);
-  });
-});
-
+//#region Update Theme
 const themes = [
     {
       colors: {
@@ -132,3 +163,5 @@ function themeWindow(window) {
   console.log(window.id, i);
   browser.theme.update(window.id, themes[i]);
 }
+
+//#endregion
