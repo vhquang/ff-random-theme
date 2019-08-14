@@ -1,10 +1,4 @@
 
-// browser.windows.onCreated.addListener(themeWindow);
-
-// Theme all currently open windows
-// browser.windows.getAll().then(wins => wins.forEach(themeWindow));
-
-
 //#region Extract theme info
 var themes_collector = {};
 
@@ -149,27 +143,36 @@ const themes = [
 ];
 
 function themeWindow(window) {
+  //#region ignore
   // Check if the window is in private browsing
-  //   if (window.incognito) {
-    //     browser.theme.update(window.id, {
-//       images: {
-  //         headerURL: "",
-  //       },
-      //   colors: {
-      //       accentcolor: "black",
-      //       textcolor: "white",
-      //       toolbar: "#333",
-      //       toolbar_text: "white"
-      //     }
-      //   });
-      // }
-    //   // Reset to the default theme otherwise
-    //   else {
-      //     browser.theme.reset(window.id);
-      //   }
-  var i = Math.floor(Math.random() * 2);
-  console.log(window.id, i);
-  browser.theme.update(window.id, themes[i]);
+  // if (window.incognito) {
+  //     browser.theme.update(window.id, {
+  //   images: {
+  //       headerURL: "",
+  //     },
+  //     colors: {
+  //         accentcolor: "black",
+  //         textcolor: "white",
+  //         toolbar: "#333",
+  //         toolbar_text: "white"
+  //       }
+  //     });
+  //   }
+  //   // Reset to the default theme otherwise
+  //   else {
+  //       browser.theme.reset(window.id);
+  //     }
+  //#endregion
+  const ids = Object.keys(themes_collector);
+  const i = Math.floor(Math.random() * ids.length);
+  const theme = themes_collector[ids[i]];
+  console.log(`window: ${window.id}, theme ${ids[i]}, index ${i}`);
+  browser.theme.update(window.id, theme);
 }
+
+browser.windows.onCreated.addListener(themeWindow);
+
+// Theme all currently open windows
+// browser.windows.getAll().then(wins => wins.forEach(themeWindow));
 
 //#endregion
