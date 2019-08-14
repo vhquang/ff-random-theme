@@ -31,21 +31,29 @@ function themeExtractor(theme) {
 }
 
 function collectTheme(themes) {
-  var t = themes[2];
-  var p = new Promise( function(resolve, reject) {
+  return new Promise( function(resolve, reject) {
 
+    function collect(todo) {
+      if (todo.length === 0) {
+        resolve();
+        return;
+      }
+
+      const item = todo.splice(0, 1)[0];
+      browser.management.setEnabled(item.id, true)
+      .then( () => browser.theme.getCurrent() )
+      .then( (curTheme) => {
+        var theme = themeExtractor(curTheme);
+        themes_collector[item.id] = theme;
+        return new Promise( (_resolve, _reject) => _resolve() );
+      })
+      .then( () => {
+        collect(todo);
+      });
+    }
+
+    collect(themes.slice());
   });
-  browser.management.setEnabled(t.id, true)
-  .then( () => browser.theme.getCurrent() )
-  .then( (curTheme) => {
-    // console.log(curTheme);
-    var theme = themeExtractor(curTheme);
-    // console.log(theme);
-    // return browser.theme.update(theme);
-    themes_collector[t.id] = theme;
-    p.resolve();
-  });
-  return p;
 }
 
 
@@ -65,9 +73,9 @@ function demoCollect(themes) {
 
 browser.management.getAll().then(extensions => {
   var themes = extensions.filter(ext => ext.type === 'theme');
-  console.log(themes);
-  demoCollect(themes);
-  // collectTheme(themes).then( () => console.log(themes_collector) );
+  // console.log(themes);
+  // demoCollect(themes);
+  collectTheme(themes).then( () => console.log(themes_collector) );
 });
 
 //#endregion
