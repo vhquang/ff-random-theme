@@ -51,6 +51,15 @@ function collectTheme(themes) {
 }
 
 
+async function collectThemeAsync(themes) {
+  for (var item of themes) {
+    await browser.management.setEnabled(item.id, true);
+    const curTheme = await browser.theme.getCurrent();
+    themes_collector[item.id] = themeExtractor(curTheme);
+  }
+}
+
+
 function demoCollect(themes) {
   var t = themes[2];
   browser.management.setEnabled(t.id, true)
@@ -126,12 +135,16 @@ const themes = [
         theme_frame: "moz-extension://c8dd224b-a585-4561-9e79-a442429b558b/aurora-persona-header.jpg"
       }
     },
+
+
     {
       colors: {
         frame: '#000',
         tab_background_text: '#fff',
       }
     },
+
+
     {
       colors: {
         accentcolor: "black",
@@ -170,7 +183,7 @@ function themeWindow(window) {
   browser.theme.update(window.id, theme);
 }
 
-browser.windows.onCreated.addListener(themeWindow);
+// browser.windows.onCreated.addListener(themeWindow);
 
 // Theme all currently open windows
 // browser.windows.getAll().then(wins => wins.forEach(themeWindow));
