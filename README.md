@@ -1,4 +1,6 @@
-# Random Theme Switcher (clone from MDN example of Theme Switcher)
+# Random Theme Switcher
+
+(clone from MDN example of Theme Switcher)
 
 ## What it does
 
